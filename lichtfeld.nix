@@ -20,7 +20,7 @@ pkgs.stdenv.mkDerivation {
   version = "0.1.0";
   src = src;
   hooks = [cmake];
-  nativeBuildInputs = [cmake ninja vcpkg glad pkgs.pkg-config pkgs.python313 pkgs.makeWrapper cudaPackages.removeStubsFromRunpathHook];
+  nativeBuildInputs = [cmake ninja vcpkg glad pkgs.pkg-config pkgs.python313 cudaPackages.removeStubsFromRunpathHook pkgs.wrapGAppsHook3];
   patches = [
     ./no_toolchain.patch
     ./add_zlib.patch
@@ -85,20 +85,14 @@ pkgs.stdenv.mkDerivation {
   '';
 
   NIX_LDFLAGS = "-L${pkgs.openusd}/lib -lusd_ms -L${imgui-sdl3}/lib -limgui_impl_sdl3";
-  
+
   installPhase = ''
     runHook preInstall
     cmake --install . --prefix $out
-    
+
     # Copy libraries not installed by cmake
     cp liblfs_rmlui.so $out/lib/ 2>/dev/null || true
-    
+
     runHook postInstall
-  '';
-  
-  postFixup = ''
-    wrapProgram $out/bin/LichtFeld-Studio \
-      --set GSETTINGS_SCHEMA_DIR ${pkgs.gsettings-desktop-schemas}/share/gsettings-schemas/${pkgs.gsettings-desktop-schemas.name}/glib-2.0/schemas \
-      --prefix LD_LIBRARY_PATH : $out/lib:$out/lib/extensions
   '';
 }
