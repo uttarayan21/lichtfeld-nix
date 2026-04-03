@@ -1,0 +1,11 @@
+--- a/src/visualizer/window/window_manager.cpp
++++ b/src/visualizer/window/window_manager.cpp
+@@ -117,7 +117,7 @@ bool WindowManager::init(const std::string& title, int width, int height) {
+         }
+         SDL_GL_MakeCurrent(window_, gl_context_);
+ 
+-        if (!gladLoadGLLoader((GLADloadproc)SDL_GL_GetProcAddress)) {
++        if (!gladLoadGL((GLADloadfunc)SDL_GL_GetProcAddress)) {
+             std::cerr << "GLAD init failed" << std::endl;
+             SDL_Quit();
+             return false;

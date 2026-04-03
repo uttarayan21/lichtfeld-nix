@@ -30,6 +30,26 @@
                 });
               });
               openusd = final.python313Packages.openusd;
+              
+              imgui = prev.imgui.overrideAttrs (finalAttrs: old: {
+                version = "docking";
+                src = final.fetchFromGitHub {
+                  owner = "ocornut";
+                  repo = "imgui";
+                  rev = "docking";
+                  hash = "sha256-UwZ56S/pXIrix0syWEgoCL986deNoezS0OVesTJjNzI=";
+                };
+              });
+              
+              implot = prev.implot.overrideAttrs (finalAttrs: old: {
+                version = "0.17";
+                src = final.fetchFromGitHub {
+                  owner = "epezent";
+                  repo = "implot";
+                  tag = "v${finalAttrs.version}";
+                  hash = "sha256-HNzNRHPLr352EDkAci4nx5qQnPI308rGH8yHkF+n5OY=";
+                };
+              });
             })
           ];
         };
@@ -45,8 +65,11 @@
           default = lichtfeld;
           glad = pkgs.callPackage ./glad.nix {};
           rmlui = pkgs.callPackage ./rmlui.nix {};
+          imgui-sdl3 = pkgs.callPackage ./imgui-sdl3.nix {};
           lichtfeld = pkgs.callPackage ./lichtfeld.nix {
-            inherit src glad rmlui;
+            inherit src glad rmlui imgui-sdl3;
+            imgui = pkgs.imgui;
+            implot = pkgs.implot;
           };
         };
       }

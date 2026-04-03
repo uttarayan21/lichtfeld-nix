@@ -29,19 +29,19 @@
     cp -r out/include/KHR $out/include/
     cp out/src/gl.c $out/src/
     
+    # Create symlink for glad.h -> gl.h for compatibility
+    ln -s gl.h $out/include/glad/glad.h
+    
     cat > $out/lib/cmake/glad/gladConfig.cmake << 'EOF'
-add_library(glad::glad STATIC IMPORTED)
-set_target_properties(glad::glad PROPERTIES
-  INTERFACE_INCLUDE_DIRECTORIES "@out@/include"
-  IMPORTED_LOCATION "@out@/lib/libglad.a"
-)
+add_library(glad::glad INTERFACE IMPORTED GLOBAL)
+target_include_directories(glad::glad INTERFACE "@out@/include")
+target_sources(glad::glad INTERFACE "@out@/src/gl.c")
 EOF
     
     substituteInPlace $out/lib/cmake/glad/gladConfig.cmake --subst-var out
-    
-    cc -c $out/src/gl.c -o gl.o -I$out/include -fPIC
-    ar rcs $out/lib/libglad.a gl.o
   '';
+  
+  setupHook = ./glad-setup-hook.sh;
 
   meta = with lib; {
     description = "Multi-Language Vulkan/GL/GLES/EGL/GLX/WGL Loader-Generator";
