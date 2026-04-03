@@ -61,10 +61,11 @@ pkgs.stdenv.mkDerivation {
     pkgs.uv
     pkgs.zlib
   ];
-  propagatedBuildInputs = [ glad ];
+  propagatedBuildInputs = [ glad rmlui ];
   cmakeFlags = [
     (lib.cmakeFeature "CMAKE_CUDA_COMPILER" "${lib.getExe cudaPackages.cuda_nvcc}")
-    (lib.cmakeFeature "CMAKE_PREFIX_PATH" "${glad}/lib/cmake;${pkgs.python313Packages.nanobind}/${pkgs.python313.sitePackages}/nanobind/cmake")
+    (lib.cmakeFeature "CMAKE_PREFIX_PATH" "${glad}/lib/cmake;${pkgs.python313Packages.nanobind}/${pkgs.python313.sitePackages}/nanobind/cmake;${rmlui}/lib/cmake;${rmlui}/share/RmlUi/cmake")
+    (lib.cmakeBool "BUILD_PYTHON_STUBS" false)
   ];
   
   preConfigure = ''

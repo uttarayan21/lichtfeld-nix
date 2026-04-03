@@ -29,6 +29,7 @@ stdenv.mkDerivation rec {
   cmakeFlags = [
     "-DBUILD_SAMPLES=OFF"
     "-DBUILD_TESTS=OFF"
+    "-DBUILD_SHARED_LIBS=OFF"
   ];
 
   meta = with lib; {
