@@ -38,6 +38,7 @@ pkgs.stdenv.mkDerivation {
     pkgs.ffmpeg
     pkgs.freetype
     pkgs.glm
+    pkgs.libGLU
     pkgs.libarchive
     pkgs.libargs
     pkgs.libGL

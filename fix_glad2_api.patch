@@ -9,3 +9,13 @@
              std::cerr << "GLAD init failed" << std::endl;
              SDL_Quit();
              return false;
+--- a/src/app/splash_screen.cpp
++++ b/src/app/splash_screen.cpp
+@@ -317,7 +317,7 @@ bool SplashScreen::init() {
+         SDL_GL_SetSwapInterval(1);
+ 
+-        if (!gladLoadGLLoader(reinterpret_cast<GLADloadproc>(SDL_GL_GetProcAddress))) {
++        if (!gladLoadGL(reinterpret_cast<GLADloadfunc>(SDL_GL_GetProcAddress))) {
+             SDL_GL_DestroyContext(gl_ctx);
+             SDL_DestroyWindow(window);
+             SDL_Quit();
