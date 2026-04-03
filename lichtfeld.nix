@@ -20,7 +20,7 @@ pkgs.stdenv.mkDerivation {
   version = "0.1.0";
   src = src;
   hooks = [cmake];
-  nativeBuildInputs = [cmake ninja vcpkg glad pkgs.pkg-config pkgs.python313 cudaPackages.removeStubsFromRunpathHook];
+  nativeBuildInputs = [cmake ninja vcpkg glad pkgs.pkg-config pkgs.python313 pkgs.makeWrapper cudaPackages.removeStubsFromRunpathHook];
   patches = [
     ./no_toolchain.patch
     ./add_zlib.patch
@@ -53,6 +53,8 @@ pkgs.stdenv.mkDerivation {
     pkgs.openssl
     pkgs.openusd
     pkgs.plutovg
+    pkgs.glib
+    pkgs.gsettings-desktop-schemas
     (pkgs.python313.withPackages (ps:
       with ps; [
         nanobind
@@ -72,6 +74,7 @@ pkgs.stdenv.mkDerivation {
     (lib.cmakeBool "CMAKE_SKIP_BUILD_RPATH" true)
     (lib.cmakeBool "CMAKE_BUILD_WITH_INSTALL_RPATH" false)
     (lib.cmakeBool "CMAKE_INSTALL_RPATH_USE_LINK_PATH" true)
+    (lib.cmakeBool "CMAKE_POSITION_INDEPENDENT_CODE" true)
   ];
 
   preConfigure = ''
@@ -82,10 +85,20 @@ pkgs.stdenv.mkDerivation {
   '';
 
   NIX_LDFLAGS = "-L${pkgs.openusd}/lib -lusd_ms -L${imgui-sdl3}/lib -limgui_impl_sdl3";
+  
   installPhase = ''
-    mkdir -p $out/bin
-    cp -r * $out/bin/
-    mkdir -p $out/bin/resources/assets/rmlui
-    cp -r $src/src/visualizer/gui/rmlui/resources/* $out/bin/resources/assets/rmlui/
+    runHook preInstall
+    cmake --install . --prefix $out
+    
+    # Copy libraries not installed by cmake
+    cp liblfs_rmlui.so $out/lib/ 2>/dev/null || true
+    
+    runHook postInstall
+  '';
+  
+  postFixup = ''
+    wrapProgram $out/bin/LichtFeld-Studio \
+      --set GSETTINGS_SCHEMA_DIR ${pkgs.gsettings-desktop-schemas}/share/glib-2.0/schemas \
+      --prefix LD_LIBRARY_PATH : $out/lib:$out/lib/extensions
   '';
 }
