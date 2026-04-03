@@ -66,8 +66,9 @@
           glad = pkgs.callPackage ./glad.nix {};
           rmlui = pkgs.callPackage ./rmlui.nix {};
           imgui-sdl3 = pkgs.callPackage ./imgui-sdl3.nix {};
+          nvjpeg2k-archive = pkgs.callPackage ./nvjpeg2k.nix {};
           lichtfeld = pkgs.callPackage ./lichtfeld.nix {
-            inherit src glad rmlui imgui-sdl3;
+            inherit src glad rmlui imgui-sdl3 nvjpeg2k-archive;
             imgui = pkgs.imgui;
             implot = pkgs.implot;
           };

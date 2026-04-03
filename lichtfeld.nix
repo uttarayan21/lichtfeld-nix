@@ -13,6 +13,7 @@
   imgui-sdl3,
   imgui,
   implot,
+  nvjpeg2k-archive,
 }:
 pkgs.stdenv.mkDerivation {
   pname = "lichtfeld-studio";
@@ -30,6 +31,7 @@ pkgs.stdenv.mkDerivation {
     cudatoolkit
     cudaPackages.libnpp
     cudaPackages.libnvjpeg
+    cudaPackages.libnvjpeg_2k
     imgui
     imgui-sdl3
     implot
@@ -61,23 +63,24 @@ pkgs.stdenv.mkDerivation {
     pkgs.uv
     pkgs.zlib
   ];
-  propagatedBuildInputs = [ glad rmlui ];
+  propagatedBuildInputs = [glad rmlui];
   cmakeFlags = [
     (lib.cmakeFeature "CMAKE_CUDA_COMPILER" "${lib.getExe cudaPackages.cuda_nvcc}")
     (lib.cmakeFeature "CMAKE_PREFIX_PATH" "${glad}/lib/cmake;${pkgs.python313Packages.nanobind}/${pkgs.python313.sitePackages}/nanobind/cmake;${rmlui}/lib/cmake;${rmlui}/share/RmlUi/cmake;${pkgs.openusd}/cmake")
+    (lib.cmakeFeature "FETCHCONTENT_SOURCE_DIR_NVJPEG2K_HEADERS" "${nvjpeg2k-archive}")
     (lib.cmakeBool "BUILD_PYTHON_STUBS" false)
     (lib.cmakeBool "CMAKE_SKIP_BUILD_RPATH" true)
     (lib.cmakeBool "CMAKE_BUILD_WITH_INSTALL_RPATH" false)
     (lib.cmakeBool "CMAKE_INSTALL_RPATH_USE_LINK_PATH" true)
   ];
-  
+
   preConfigure = ''
     cmakeFlagsArray+=(
       "-DCMAKE_CXX_FLAGS=-I${glad}/include -I${pkgs.python313}/include/python3.13 -I${imgui-sdl3}/include"
       "-DCMAKE_C_FLAGS=-I${glad}/include -I${imgui-sdl3}/include"
     )
   '';
-  
+
   NIX_LDFLAGS = "-L${pkgs.openusd}/lib -lusd_ms -L${imgui-sdl3}/lib -limgui_impl_sdl3";
   installPhase = ''
     mkdir -p $out/bin
