@@ -1,0 +1,19 @@
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index a378cb6e..3508912b 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -6,10 +6,10 @@
+ set(RAW_VCPKG_PATH $ENV{VCPKG_ROOT})
+ file(TO_CMAKE_PATH "${RAW_VCPKG_PATH}" VCPKG_ROOT)
+ 
+-if ("${CMAKE_TOOLCHAIN_FILE}" STREQUAL "")
+-    message(STATUS "user didn't specify CMAKE_TOOLCHAIN_FILE manually, so let's use default -> ${VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake")
+-    set(CMAKE_TOOLCHAIN_FILE "${VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake")
+-endif()
++# if ("${CMAKE_TOOLCHAIN_FILE}" STREQUAL "")
++#     message(STATUS "user didn't specify CMAKE_TOOLCHAIN_FILE manually, so let's use default -> ${VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake")
++#     set(CMAKE_TOOLCHAIN_FILE "${VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake")
++# endif()
+ 
+ cmake_minimum_required(VERSION 3.30)
+ 
