@@ -18,22 +18,6 @@
         "type": "github"
       }
     },
-    "lichtfeld": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1775168381,
-        "narHash": "sha256-Nyzf8pf4uXYicok/0jgnzsFaWbhCzZn5f3W//un5HP0=",
-        "owner": "MrNeRF",
-        "repo": "LichtFeld-Studio",
-        "rev": "b377021349ae2fb8a83a213674ec3c7d5c949169",
-        "type": "github"
-      },
-      "original": {
-        "owner": "MrNeRF",
-        "repo": "LichtFeld-Studio",
-        "type": "github"
-      }
-    },
     "nixpkgs": {
       "locked": {
         "lastModified": 1774701658,
@@ -51,7 +35,6 @@
     "root": {
       "inputs": {
         "flake-utils": "flake-utils",
-        "lichtfeld": "lichtfeld",
         "nixpkgs": "nixpkgs"
       }
     },

@@ -19,6 +19,7 @@ pkgs.stdenv.mkDerivation {
   nativeBuildInputs = [cmake ninja vcpkg glad pkgs.pkg-config pkgs.perl];
   patches = [
     ./no_toolchain.patch
+    ./add_zlib.patch
   ];
   buildInputs = [
     cudatoolkit
@@ -49,10 +50,13 @@ pkgs.stdenv.mkDerivation {
     pkgs.spdlog
     rmlui
     pkgs.uv
+    pkgs.zlib
   ];
   cmakeFlags = [
     (lib.cmakeFeature "CMAKE_CUDA_COMPILER" "${lib.getExe cudaPackages.cuda_nvcc}")
     (lib.cmakeFeature "CMAKE_PREFIX_PATH" "${glad}/lib/cmake;${pkgs.python313Packages.nanobind}/${pkgs.python313.sitePackages}/nanobind/cmake")
+    (lib.cmakeBool "BUILD_NVJPEG_EXT" false)
+    (lib.cmakeBool "BUILD_NVJPEG2K_EXT" false)
   ];
   installPhase = ''
     mkdir -p $out/bin

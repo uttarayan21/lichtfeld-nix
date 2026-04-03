@@ -16,17 +16,31 @@
 
   buildInputs = [python3 python3.pkgs.jinja2 python3.pkgs.ply];
 
+  buildPhase = ''
+    python3 -m glad --api gl:core=4.6 --out-path out --reproducible c
+  '';
+
   installPhase = ''
     mkdir -p $out/lib/cmake/glad
-    mkdir -p $out/share/glad
+    mkdir -p $out/include
+    mkdir -p $out/src
     
-    cp -r glad $out/share/glad/
+    cp -r out/include/glad $out/include/
+    cp -r out/include/KHR $out/include/
+    cp out/src/gl.c $out/src/
     
-    cp cmake/GladConfig.cmake $out/lib/cmake/glad/gladConfig.cmake
-    cp cmake/CMakeLists.txt $out/lib/cmake/glad/
+    cat > $out/lib/cmake/glad/gladConfig.cmake << 'EOF'
+add_library(glad::glad STATIC IMPORTED)
+set_target_properties(glad::glad PROPERTIES
+  INTERFACE_INCLUDE_DIRECTORIES "@out@/include"
+  IMPORTED_LOCATION "@out@/lib/libglad.a"
+)
+EOF
     
-    sed -i 's|''${CMAKE_CURRENT_LIST_DIR}/\.\./|'"$out"'/share/glad/|g' $out/lib/cmake/glad/gladConfig.cmake
-    sed -i 's|''${CMAKE_CURRENT_LIST_DIR}|'"$out"'/lib/cmake/glad|g' $out/lib/cmake/glad/CMakeLists.txt
+    substituteInPlace $out/lib/cmake/glad/gladConfig.cmake --subst-var out
+    
+    cc -c $out/src/gl.c -o gl.o -I$out/include -fPIC
+    ar rcs $out/lib/libglad.a gl.o
   '';
 
   meta = with lib; {

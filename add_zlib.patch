@@ -1,0 +1,10 @@
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -279,6 +279,7 @@ find_package(OpenSSL REQUIRED)
+ find_package(pxr CONFIG REQUIRED)
+ find_package(assimp REQUIRED)
+ find_package(RmlUi CONFIG REQUIRED)
++find_package(ZLIB REQUIRED)
+ 
+ # Setup output directory
+ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
