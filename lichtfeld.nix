@@ -98,7 +98,7 @@ pkgs.stdenv.mkDerivation {
   
   postFixup = ''
     wrapProgram $out/bin/LichtFeld-Studio \
-      --set GSETTINGS_SCHEMA_DIR ${pkgs.gsettings-desktop-schemas}/share/glib-2.0/schemas \
+      --set GSETTINGS_SCHEMA_DIR ${pkgs.gsettings-desktop-schemas}/share/gsettings-schemas/${pkgs.gsettings-desktop-schemas.name}/glib-2.0/schemas \
       --prefix LD_LIBRARY_PATH : $out/lib:$out/lib/extensions
   '';
 }
