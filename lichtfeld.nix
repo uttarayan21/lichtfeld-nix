@@ -64,7 +64,7 @@ pkgs.stdenv.mkDerivation {
   propagatedBuildInputs = [ glad rmlui ];
   cmakeFlags = [
     (lib.cmakeFeature "CMAKE_CUDA_COMPILER" "${lib.getExe cudaPackages.cuda_nvcc}")
-    (lib.cmakeFeature "CMAKE_PREFIX_PATH" "${glad}/lib/cmake;${pkgs.python313Packages.nanobind}/${pkgs.python313.sitePackages}/nanobind/cmake;${rmlui}/lib/cmake;${rmlui}/share/RmlUi/cmake")
+    (lib.cmakeFeature "CMAKE_PREFIX_PATH" "${glad}/lib/cmake;${pkgs.python313Packages.nanobind}/${pkgs.python313.sitePackages}/nanobind/cmake;${rmlui}/lib/cmake;${rmlui}/share/RmlUi/cmake;${pkgs.openusd}/cmake")
     (lib.cmakeBool "BUILD_PYTHON_STUBS" false)
   ];
   
@@ -74,6 +74,8 @@ pkgs.stdenv.mkDerivation {
       "-DCMAKE_C_FLAGS=-I${glad}/include -I${imgui-sdl3}/include"
     )
   '';
+  
+  NIX_LDFLAGS = "-L${pkgs.openusd}/lib -lusd_ms";
   installPhase = ''
     mkdir -p $out/bin
     cp -r * $out/bin/
