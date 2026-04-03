@@ -1,0 +1,12 @@
+--- a/external/CMakeLists.txt
++++ b/external/CMakeLists.txt
+@@ -41,8 +41,8 @@ if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/nvImageCodec/CMakeLists.txt")
+     set(BUILD_NVJPEG_EXT ON CACHE BOOL "" FORCE)
+-    set(BUILD_NVJPEG2K_EXT ON CACHE BOOL "" FORCE)
++    set(BUILD_NVJPEG2K_EXT OFF CACHE BOOL "" FORCE)
+-    set(WITH_DYNAMIC_NVJPEG OFF CACHE BOOL "" FORCE)
+-    set(WITH_DYNAMIC_NVJPEG2K OFF CACHE BOOL "" FORCE)
++    set(WITH_DYNAMIC_NVJPEG ON CACHE BOOL "" FORCE)
++    set(WITH_DYNAMIC_NVJPEG2K OFF CACHE BOOL "" FORCE)
+     add_subdirectory(nvImageCodec EXCLUDE_FROM_ALL)
+ else()

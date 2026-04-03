@@ -15,6 +15,23 @@
         pkgs = import nixpkgs {
           inherit system;
           config.allowUnfree = true;
+          overlays = [
+            (final: prev: {
+              python313Packages = prev.python313Packages.overrideScope (pyFinal: pyPrev: {
+                openusd = pyPrev.openusd.overrideAttrs (old: rec {
+                  version = "26.03";
+                  src = final.fetchFromGitHub {
+                    owner = "PixarAnimationStudios";
+                    repo = "OpenUSD";
+                    tag = "v${version}";
+                    hash = "sha256-Ijh7x63TqEkittO+r//sIkBu7I52/6C7a2n9Nq6Kt7g=";
+                  };
+                  patches = [];
+                });
+              });
+              openusd = final.python313Packages.openusd;
+            })
+          ];
         };
         src = pkgs.fetchFromGitHub {
           owner = "MrNeRF";
