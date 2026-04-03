@@ -19,7 +19,7 @@ pkgs.stdenv.mkDerivation {
   version = "0.1.0";
   src = src;
   hooks = [cmake];
-  nativeBuildInputs = [cmake ninja vcpkg glad pkgs.pkg-config pkgs.python313];
+  nativeBuildInputs = [cmake ninja vcpkg glad pkgs.pkg-config pkgs.python313 cudaPackages.removeStubsFromRunpathHook];
   patches = [
     ./no_toolchain.patch
     ./add_zlib.patch
@@ -82,5 +82,7 @@ pkgs.stdenv.mkDerivation {
   installPhase = ''
     mkdir -p $out/bin
     cp -r * $out/bin/
+    mkdir -p $out/bin/resources/assets/rmlui
+    cp -r $src/src/visualizer/gui/rmlui/resources/* $out/bin/resources/assets/rmlui/
   '';
 }
