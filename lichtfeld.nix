@@ -66,6 +66,9 @@ pkgs.stdenv.mkDerivation {
     (lib.cmakeFeature "CMAKE_CUDA_COMPILER" "${lib.getExe cudaPackages.cuda_nvcc}")
     (lib.cmakeFeature "CMAKE_PREFIX_PATH" "${glad}/lib/cmake;${pkgs.python313Packages.nanobind}/${pkgs.python313.sitePackages}/nanobind/cmake;${rmlui}/lib/cmake;${rmlui}/share/RmlUi/cmake;${pkgs.openusd}/cmake")
     (lib.cmakeBool "BUILD_PYTHON_STUBS" false)
+    (lib.cmakeBool "CMAKE_SKIP_BUILD_RPATH" true)
+    (lib.cmakeBool "CMAKE_BUILD_WITH_INSTALL_RPATH" false)
+    (lib.cmakeBool "CMAKE_INSTALL_RPATH_USE_LINK_PATH" true)
   ];
   
   preConfigure = ''
@@ -75,7 +78,7 @@ pkgs.stdenv.mkDerivation {
     )
   '';
   
-  NIX_LDFLAGS = "-L${pkgs.openusd}/lib -lusd_ms";
+  NIX_LDFLAGS = "-L${pkgs.openusd}/lib -lusd_ms -L${imgui-sdl3}/lib -limgui_impl_sdl3";
   installPhase = ''
     mkdir -p $out/bin
     cp -r * $out/bin/
