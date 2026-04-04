@@ -78,6 +78,7 @@
             buildInputs = [
               packages.lichtfeld
               pkgs.colmapWithCuda
+              (pkgs.python313.withPackages (ps: with ps; [uv]))
             ];
           };
         };
