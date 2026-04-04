@@ -116,4 +116,9 @@ pkgs.stdenv.mkDerivation {
 
     runHook postInstall
   '';
+
+  postFixup = ''
+    wrapProgram $out/bin/LichtFeld-Studio \
+      --prefix LD_LIBRARY_PATH : "${lib.makeLibraryPath [cudaPackages.libnpp cudaPackages.libnvjpeg cudaPackages.libnvjpeg_2k]}"
+  '';
 }
