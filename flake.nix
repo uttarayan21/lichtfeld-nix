@@ -30,7 +30,7 @@
                 });
               });
               openusd = final.python313Packages.openusd;
-              
+
               imgui = prev.imgui.overrideAttrs (finalAttrs: old: {
                 version = "docking";
                 src = final.fetchFromGitHub {
@@ -40,7 +40,7 @@
                   hash = "sha256-UwZ56S/pXIrix0syWEgoCL986deNoezS0OVesTJjNzI=";
                 };
               });
-              
+
               implot = prev.implot.overrideAttrs (finalAttrs: old: {
                 version = "0.17";
                 src = final.fetchFromGitHub {
@@ -60,7 +60,7 @@
           hash = "sha256-9cKzLRucYc60u0VtE+0hdiiiYTbqCh0UcsHTNnyYpXc=";
           fetchSubmodules = true;
         };
-      in {
+      in rec {
         packages = rec {
           default = lichtfeld;
           glad = pkgs.callPackage ./glad.nix {};
@@ -71,6 +71,14 @@
             inherit src glad rmlui imgui-sdl3 nvjpeg2k-archive;
             imgui = pkgs.imgui;
             implot = pkgs.implot;
+          };
+        };
+        devShells = {
+          default = pkgs.mkShell {
+            buildInputs = [
+              packages.lichtfeld
+              pkgs.colmapWithCuda
+            ];
           };
         };
       }
