@@ -1,26 +1,49 @@
 {
+  assimp,
   cmake,
   cudaPackages,
   cudatoolkit,
+  ffmpeg,
+  freetype,
   glad,
-  lib,
-  ninja,
-  pkgs,
-  rmlui,
-  src,
-  vcpkg,
-  openimageio,
-  imgui-sdl3,
+  glm,
   imgui,
+  imgui-sdl3,
   implot,
+  lib,
+  libarchive,
+  libargs,
+  libGL,
+  libGLU,
+  libwebp,
+  libX11,
+  lunasvg,
+  nativefiledialog-extended,
+  ninja,
+  nlohmann_json,
   nvjpeg2k-archive,
+  onetbb,
+  openimageio,
+  openssl,
+  openusd,
+  pkg-config,
+  pkgs,
+  plutovg,
+  python313,
+  rmlui,
+  sdl3,
+  spdlog,
+  src,
+  uv,
+  wrapGAppsHook3,
+  zlib,
 }:
 pkgs.stdenv.mkDerivation {
   pname = "lichtfeld-studio";
   version = "0.1.0";
   src = src;
   hooks = [cmake];
-  nativeBuildInputs = [cmake ninja vcpkg glad pkgs.pkg-config pkgs.python313 cudaPackages.removeStubsFromRunpathHook pkgs.wrapGAppsHook3];
+  nativeBuildInputs = [cmake ninja glad pkg-config python313 cudaPackages.removeStubsFromRunpathHook wrapGAppsHook3];
   patches = [
     ./no_toolchain.patch
     ./add_zlib.patch
@@ -28,42 +51,40 @@ pkgs.stdenv.mkDerivation {
     ./fix_glad2_api.patch
   ];
   buildInputs = [
-    cudatoolkit
+    assimp
     cudaPackages.libnpp
     cudaPackages.libnvjpeg
     cudaPackages.libnvjpeg_2k
+    cudatoolkit
+    ffmpeg
+    freetype
+    glm
     imgui
     imgui-sdl3
     implot
+    libarchive
+    libargs
+    libGL
+    libGLU
+    libwebp
+    libX11
+    lunasvg
+    nativefiledialog-extended
+    nlohmann_json
+    onetbb
     openimageio
-    pkgs.assimp
-    pkgs.ffmpeg
-    pkgs.freetype
-    pkgs.glm
-    pkgs.libGLU
-    pkgs.libarchive
-    pkgs.libargs
-    pkgs.libGL
-    pkgs.libwebp
-    pkgs.libX11
-    pkgs.lunasvg
-    pkgs.nativefiledialog-extended
-    pkgs.nlohmann_json
-    pkgs.onetbb
-    pkgs.openssl
-    pkgs.openusd
-    pkgs.plutovg
-    pkgs.glib
-    pkgs.gsettings-desktop-schemas
-    (pkgs.python313.withPackages (ps:
+    openssl
+    openusd
+    plutovg
+    sdl3
+    spdlog
+    uv
+    zlib
+    rmlui
+    (python313.withPackages (ps:
       with ps; [
         nanobind
       ]))
-    pkgs.sdl3
-    pkgs.spdlog
-    rmlui
-    pkgs.uv
-    pkgs.zlib
   ];
   propagatedBuildInputs = [glad rmlui];
   cmakeFlags = [
@@ -84,7 +105,7 @@ pkgs.stdenv.mkDerivation {
     )
   '';
 
-  NIX_LDFLAGS = "-L${pkgs.openusd}/lib -lusd_ms -L${imgui-sdl3}/lib -limgui_impl_sdl3";
+  NIX_LDFLAGS = "-L${openusd}/lib -lusd_ms -L${imgui-sdl3}/lib -limgui_impl_sdl3";
 
   installPhase = ''
     runHook preInstall
