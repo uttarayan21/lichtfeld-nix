@@ -6,7 +6,6 @@
   imgui,
   vcpkg,
 }:
-
 stdenv.mkDerivation (finalAttrs: {
   pname = "implot";
   version = "0.16";
@@ -23,9 +22,9 @@ stdenv.mkDerivation (finalAttrs: {
     cp "$cmakeRules"/CMakeLists.txt ./
   '';
 
-  nativeBuildInputs = [ cmake ];
+  nativeBuildInputs = [cmake];
 
-  buildInputs = [ imgui ];
+  buildInputs = [imgui];
 
   meta = {
     description = "Advanced 2D Plotting for Dear ImGui";

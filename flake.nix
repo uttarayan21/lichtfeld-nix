@@ -37,7 +37,7 @@
                   owner = "ocornut";
                   repo = "imgui";
                   rev = "docking";
-                  hash = "sha256-UwZ56S/pXIrix0syWEgoCL986deNoezS0OVesTJjNzI=";
+                  hash = "sha256-vyK+HfV7q/ZXnM+Cm/gt1UCgs4fFeq+1oH2/zSlC6PE=";
                 };
               });
 

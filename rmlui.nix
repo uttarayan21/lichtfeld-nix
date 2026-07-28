@@ -6,7 +6,6 @@
   freetype,
   llvmPackages,
 }:
-
 stdenv.mkDerivation rec {
   pname = "rmlui";
   version = "6.2";
@@ -20,11 +19,13 @@ stdenv.mkDerivation rec {
 
   nativeBuildInputs = [cmake];
 
-  buildInputs = [
-    freetype
-  ] ++ lib.optionals stdenv.cc.isClang [
-    llvmPackages.libcxx
-  ];
+  buildInputs =
+    [
+      freetype
+    ]
+    ++ lib.optionals stdenv.cc.isClang [
+      llvmPackages.libcxx
+    ];
 
   cmakeFlags = [
     "-DBUILD_SAMPLES=OFF"

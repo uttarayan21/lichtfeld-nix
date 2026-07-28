@@ -1,4 +1,4 @@
-{ pkgs }:
+{pkgs}:
 pkgs.stdenv.mkDerivation {
   pname = "nvjpeg2k-archive";
   version = "0.9.0.43";
