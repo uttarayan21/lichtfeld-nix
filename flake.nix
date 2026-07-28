@@ -56,19 +56,26 @@
         src = pkgs.fetchFromGitHub {
           owner = "MrNeRF";
           repo = "LichtFeld-Studio";
-          rev = "v0.5.1";
-          hash = "sha256-9cKzLRucYc60u0VtE+0hdiiiYTbqCh0UcsHTNnyYpXc=";
+          rev = "v0.5.3";
+          hash = "sha256-uyFI9Xyg5ftsI7f3pavI/sifVzGKlHL8ABoiyfe5yBU=";
           fetchSubmodules = true;
+        };
+        # Upstream FetchContent's NFD on Linux (GTK backend). Pre-fetch it so the
+        # build stays offline; wired up via FETCHCONTENT_SOURCE_DIR_*.
+        nfd-src = pkgs.fetchFromGitHub {
+          owner = "btzy";
+          repo = "nativefiledialog-extended";
+          tag = "v1.3.0";
+          hash = "sha256-JrwJP7zt/4oW4OQHCEM23k+zm6j1AVglGJowwkWc29k=";
         };
       in rec {
         packages = rec {
           default = lichtfeld;
-          glad = pkgs.callPackage ./glad.nix {};
           rmlui = pkgs.callPackage ./rmlui.nix {};
           imgui-sdl3 = pkgs.callPackage ./imgui-sdl3.nix {};
           nvjpeg2k-archive = pkgs.callPackage ./nvjpeg2k.nix {};
           lichtfeld = pkgs.callPackage ./lichtfeld.nix {
-            inherit src glad rmlui imgui-sdl3 nvjpeg2k-archive;
+            inherit src nfd-src rmlui imgui-sdl3 nvjpeg2k-archive;
             imgui = pkgs.imgui;
             implot = pkgs.implot;
           };
