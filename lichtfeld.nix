@@ -163,10 +163,11 @@ pkgs.stdenv.mkDerivation {
       cleaned=$(printf '%s' "$rpath" | tr ':' '\n' | grep -v "^$NIX_BUILD_TOP" | paste -sd:)
       patchelf --set-rpath "$cleaned''${cleaned:+:}$out/lib" "$f"
     done
-  '';
 
-  postFixup = ''
-    wrapProgram $out/bin/LichtFeld-Studio \
+    # Hand the CUDA/Vulkan library path to wrapGAppsHook3 instead of calling
+    # wrapProgram ourselves, so the binary ends up with a single wrapper.
+    gappsWrapperArgs+=(
       --prefix LD_LIBRARY_PATH : "${lib.makeLibraryPath [cudaPackages.libnpp cudaPackages.libnvjpeg cudaPackages.libnvjpeg_2k vulkan-loader]}"
+    )
   '';
 }
